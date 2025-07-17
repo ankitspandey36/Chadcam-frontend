@@ -36,8 +36,8 @@ function VideoBox({ peer }) {
   const videoTrack = useHMSStore(selectVideoTrackByPeerID(peer.id));
   const isVideoOn = videoTrack?.enabled;
 
-  console.log(avatar);
-  console.log(isVideoOn);
+  // console.log(avatar);
+  // console.log(isVideoOn);
 
 
 
