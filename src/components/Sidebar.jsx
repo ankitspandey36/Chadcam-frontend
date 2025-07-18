@@ -95,9 +95,10 @@ function Sidebar() {
 
       {/* Chat input */}
       {roomId && (
-        <div className="absolute bottom-0 left-0 w-full px-2 py-2 bg-[#303030] shadow-inner rounded-t-3xl">
+        <div className="absolute bottom-0 left-0 w-full px-2 py-2">
           <form className="w-full" onSubmit={handleSendMessage}>
-            <div className="flex items-center bg-black rounded-md px-3 py-2 w-full">
+            <div className="flex items-center rounded-md bg-black px-3 py-2 w-full">
+              {/* Message Input */}
               <input
                 type="text"
                 placeholder="Type Message"
@@ -106,8 +107,11 @@ function Sidebar() {
                 className="flex-1 bg-transparent text-white text-sm outline-none placeholder-gray-400"
               />
 
-              {/* Image upload */}
-              <label htmlFor="imgMessage" className="p-2 rounded-full cursor-pointer hover:bg-gray-700">
+              {/* Image Upload */}
+              <label
+                htmlFor="imgMessage"
+                className="p-2 rounded-full cursor-pointer hover:bg-gray-700"
+              >
                 <Image className="w-4 h-4 text-white" />
               </label>
               <input
@@ -122,7 +126,7 @@ function Sidebar() {
                 className="hidden"
               />
 
-              {/* Send button */}
+              {/* Send Button */}
               <button
                 type="submit"
                 aria-label="Send message"
@@ -134,6 +138,7 @@ function Sidebar() {
           </form>
         </div>
       )}
+
 
     </div>
   );
