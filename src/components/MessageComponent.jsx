@@ -32,7 +32,7 @@ function MessageComponent() {
   return (
     <div className='relative'>
       <h1 className="text-white font-semibold text-lg p-2">Chat:</h1>
-      <div className='overflow-y-auto overflow-x-hidden max-h-[55vh] px-2 scrollbar-hide w-full'>
+      <div className="overflow-y-auto max-h-[35vh] px-2 scrollbar-hide w-full">
 
         {messages.map((message) => {
           const isMine = user && message.senderId._id === user._id;
