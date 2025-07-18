@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../Photos/logo.png';
-import { LogOut, SendHorizonal, Image } from 'lucide-react';
+import { LogOut, SendHorizonal } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import TagComponent from './TagComponent';
+import MessageComponent from './MessageComponent';
+import { Image } from "lucide-react";
 import { axiosInstance } from '../features/axios';
 import { socket } from '../features/clientSocket';
 import RulesSection from './Rules';
-import TagComponent from './TagComponent';
-import MessageComponent from './MessageComponent';
 
 function Sidebar() {
+
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const [textMessage, setTextMessage] = useState("");
+  const roomId = useSelector((state) => state.room.roomId)
   const [images, setImages] = useState(null);
-
-  const roomId = useSelector((state) => state.room.roomId);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    (async () => {
+    ; (async () => {
       const res = await axiosInstance.get("/user/me");
       setUser(res.data.data);
-    })();
-  }, [isLoggedIn]);
+    })()
+  }, [])
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -54,6 +55,7 @@ function Sidebar() {
         };
 
         socket.emit("message", msgObj);
+
         setImages(null);
       } catch (err) {
         console.error("Error uploading image:", err);
@@ -74,72 +76,101 @@ function Sidebar() {
     }
   };
 
-  return (
-    <div className="h-screen w-[25%] bg-[#121212] text-white flex flex-col border-r border-[#7DD3FC] relative">
+  const isLoggedIn = useSelector((state) => { return (state.auth.isLoggedIn) });
 
-      {/* Header */}
-      <div className="flex items-center justify-center gap-3 pt-3 pb-2">
-        <img src={logo} alt="Chadcam*" className="h-[2.5em] w-[2.5em] rounded-2xl" />
-        <h1 className="text-lg lg:text-2xl font-bold hidden md:block">Chadcam</h1>
+  return (
+    <div className="sidebar h-screen w-[25%] shadow-md hidden bg-[#121212] text-white sm:flex flex-wrap flex-col relative border-r-1 border-[#7DD3FC]">
+
+      {/*Header*/}
+      <div className="head flex items-center justify-center gap-3 pt-3 pb-2 w-full">
+        <img
+          src={logo}
+          alt="Chadcam*"
+          className="h-[2.5em] w-[2.5em] rounded-2xl"
+        />
+        <h1 className=" md:text-lg lg:text-2xl p-0.5 m-0.5 font-bold hidden md:block">Chadcam</h1>
       </div>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-2 space-y-3 pb-32">
+      {/*Content*/}
+      <div className="content flex-1 relative">
+
         {!isLoggedIn && <RulesSection />}
+
+
+        {/*When LOGGED in */}
         {isLoggedIn && (
-          <>
+          <div className="logged-in-content h-full flex flex-col pb-20">
+
+            {/* Tag */}
+
             <TagComponent />
+            {/*Chat*/}
             {roomId && <MessageComponent />}
-          </>
+
+            {roomId && <div className="chat absolute bottom-0 w-full bg-[#303030] h-13 shadow-inner ">
+              <div className="chat absolute bottom-0 w-full bg-[#303030] h-13 rounded-t-3xl shadow-inner ">
+
+
+
+                <form className="flex h-full items-center gap-3 relative" onSubmit={handleSendMessage}>
+                  {images && (
+                    <div className="relative  p-2 rounded shadow-md flex items-center w-[90%]">
+                      <img
+                        src={URL.createObjectURL(images)}
+                        alt="preview"
+                        className="max-h-[60px] max-w-[100%] object-contain rounded"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => setImages(null)}
+                        className="absolute top-0 right-0 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                        aria-label="Remove image"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+
+                  <input
+                    type="text"
+                    placeholder="Type Message"
+                    value={textMessage}
+                    onChange={(e) => setTextMessage(e.target.value)}
+                    className={`bg-black text-white w-[100%] h-[100%] px-4 text-lg outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 pr-24 ${images ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={!!images}
+                  />
+
+
+
+                  <div className="absolute right-1 flex items-center gap-2">
+                    <label htmlFor="imgMessage" className="bg-gray-700 rounded-full p-2 cursor-pointer hover:bg-gray-600 transition">
+                      <Image className="w-4 h-4 text-white" />
+                    </label>
+                    <input type="file" accept="image/*" id="imgMessage" onChange={(e) => {
+                      if (e.target.files.length > 0) {
+                        setImages(e.target.files[0]);
+                      }
+                    }} className="hidden" />
+
+                    <button
+                      type="submit"
+
+                      aria-label="Send message"
+                      className="bg-gray-700 rounded-full p-2 hover:bg-gray-600 transition"
+
+                    >
+                      <SendHorizonal className="w-4 h-4 text-white" />
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+
+            </div>}
+          </div>
         )}
       </div>
-
-      {/* Chat input */}
-      {roomId && (
-        <div className="absolute bottom-0 left-0 w-full px-2 py-2">
-          <form className="w-full" onSubmit={handleSendMessage}>
-            <div className="flex items-center rounded-md bg-black px-3 py-2 w-full">
-              {/* Message Input */}
-              <input
-                type="text"
-                placeholder="Type Message"
-                value={textMessage}
-                onChange={(e) => setTextMessage(e.target.value)}
-                className="flex-1 bg-transparent text-white text-sm outline-none placeholder-gray-400"
-              />
-
-              {/* Image Upload */}
-              <label
-                htmlFor="imgMessage"
-                className="p-2 rounded-full cursor-pointer hover:bg-gray-700"
-              >
-                <Image className="w-4 h-4 text-white" />
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                id="imgMessage"
-                onChange={(e) => {
-                  if (e.target.files.length > 0) {
-                    setImages(e.target.files[0]);
-                  }
-                }}
-                className="hidden"
-              />
-
-              {/* Send Button */}
-              <button
-                type="submit"
-                aria-label="Send message"
-                className="p-2 rounded-full hover:bg-gray-700"
-              >
-                <SendHorizonal className="w-4 h-4 text-white" />
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-
     </div>
   );
 }
