@@ -92,7 +92,8 @@ function Sidebar() {
       </div>
 
       {/*Content*/}
-      <div className="content flex-1 relative">
+      <div className="content flex-1 overflow-y-auto relative max-h-[calc(100vh-5rem)]">
+
 
         {!isLoggedIn && <RulesSection />}
 
