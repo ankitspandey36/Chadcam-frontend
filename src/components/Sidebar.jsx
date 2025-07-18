@@ -101,7 +101,7 @@ function Sidebar() {
         {isLoggedIn && (
           <div className="logged-in-content h-full flex flex-col">
 
-            <div className="h-[40%] overflow-y-auto scrollbar-hide px-2">
+            <div className="h-[40%] flex flex-col">
               <TagComponent />
             </div>
 
