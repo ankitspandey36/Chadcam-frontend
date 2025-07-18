@@ -99,28 +99,26 @@ function Sidebar() {
 
         {/*When LOGGED in */}
         {isLoggedIn && (
-          <div className="logged-in-content h-full flex flex-col pb-20">
+          <div className="logged-in-content h-full flex flex-col">
 
-            {/* Tag */}
+            <div className="h-[40%] overflow-y-auto scrollbar-hide px-2">
+              <TagComponent />
+            </div>
 
-            <TagComponent />
-            {/*Chat*/}
-            {roomId && <MessageComponent />}
+            <div className="h-[60%] overflow-y-auto scrollbar-hide px-2">
+              {roomId && <MessageComponent />}
+            </div>
 
-            {roomId && <div className="chat absolute bottom-0 w-full bg-[#303030] h-13 shadow-inner ">
-              <div className="chat absolute bottom-0 w-full bg-[#303030] h-13 rounded-t-3xl shadow-inner ">
-
-
-
+            {roomId && (
+              <div className="chat absolute bottom-0 w-full bg-[#303030] h-13 rounded-t-3xl shadow-inner">
                 <form className="flex h-full items-center gap-3 relative" onSubmit={handleSendMessage}>
                   {images && (
-                    <div className="relative  p-2 rounded shadow-md flex items-center w-[90%]">
+                    <div className="relative p-2 rounded shadow-md flex items-center w-[90%]">
                       <img
                         src={URL.createObjectURL(images)}
                         alt="preview"
                         className="max-h-[60px] max-w-[100%] object-contain rounded"
                       />
-
                       <button
                         type="button"
                         onClick={() => setImages(null)}
@@ -141,35 +139,35 @@ function Sidebar() {
                     disabled={!!images}
                   />
 
-
-
                   <div className="absolute right-1 flex items-center gap-2">
                     <label htmlFor="imgMessage" className="bg-gray-700 rounded-full p-2 cursor-pointer hover:bg-gray-600 transition">
                       <Image className="w-4 h-4 text-white" />
                     </label>
-                    <input type="file" accept="image/*" id="imgMessage" onChange={(e) => {
-                      if (e.target.files.length > 0) {
-                        setImages(e.target.files[0]);
-                      }
-                    }} className="hidden" />
-
+                    <input
+                      type="file"
+                      accept="image/*"
+                      id="imgMessage"
+                      onChange={(e) => {
+                        if (e.target.files.length > 0) {
+                          setImages(e.target.files[0]);
+                        }
+                      }}
+                      className="hidden"
+                    />
                     <button
                       type="submit"
-
                       aria-label="Send message"
                       className="bg-gray-700 rounded-full p-2 hover:bg-gray-600 transition"
-
                     >
                       <SendHorizonal className="w-4 h-4 text-white" />
                     </button>
                   </div>
                 </form>
               </div>
-
-
-            </div>}
+            )}
           </div>
         )}
+
       </div>
     </div>
   );
