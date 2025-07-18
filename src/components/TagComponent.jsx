@@ -61,7 +61,7 @@ function TagComponent() {
 
 
             <div
-                className="flex flex-col gap-2 max-h-[20vh] overflow-y-auto overflow-x-hidden scrollbar-hide"
+                className="flex flex-col gap-2 max-h-30 overflow-y-auto scrollbar-hide w-full px-1"
                 ref={tagContainerRef}
             >
                 {tags.map((tag, i) => (
