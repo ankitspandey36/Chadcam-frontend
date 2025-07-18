@@ -92,82 +92,79 @@ function Sidebar() {
       </div>
 
       {/*Content*/}
-      <div className="content flex-1 relative">
-
+      <div className="content flex-1 flex flex-col overflow-hidden relative">
         {!isLoggedIn && <RulesSection />}
 
-
-        {/*When LOGGED in */}
         {isLoggedIn && (
-          <div className="logged-in-content h-full flex flex-col pb-20">
-
-            {/* Tag */}
-
+          <div className="logged-in-content flex flex-col h-full overflow-hidden pb-20">
             <TagComponent />
             {/*Chat*/}
-            {roomId && <MessageComponent />}
+            {roomId && (
+              <div className="flex-1 overflow-y-auto pr-1 scrollbar-hide">
+                <MessageComponent />
+              </div>
+            )}
+
+
+
 
             {roomId && <div className="chat absolute bottom-0 w-full bg-[#303030] h-13 shadow-inner ">
-              <div className="chat absolute bottom-0 w-full bg-[#303030] h-13 rounded-t-3xl shadow-inner ">
-
-
-
-                <form className="flex h-full items-center gap-3 relative" onSubmit={handleSendMessage}>
-                  {images && (
-                    <div className="relative  p-2 rounded shadow-md flex items-center w-[90%]">
-                      <img
-                        src={URL.createObjectURL(images)}
-                        alt="preview"
-                        className="max-h-[60px] max-w-[100%] object-contain rounded"
-                      />
-
-                      <button
-                        type="button"
-                        onClick={() => setImages(null)}
-                        className="absolute top-0 right-0 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
-                        aria-label="Remove image"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  )}
-
-                  <input
-                    type="text"
-                    placeholder="Type Message"
-                    value={textMessage}
-                    onChange={(e) => setTextMessage(e.target.value)}
-                    className={`bg-black text-white w-[100%] h-[100%] px-4 text-lg outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 pr-24 ${images ? "opacity-50 cursor-not-allowed" : ""}`}
-                    disabled={!!images}
-                  />
-
-
-
-                  <div className="absolute right-1 flex items-center gap-2">
-                    <label htmlFor="imgMessage" className="bg-gray-700 rounded-full p-2 cursor-pointer hover:bg-gray-600 transition">
-                      <Image className="w-4 h-4 text-white" />
-                    </label>
-                    <input type="file" accept="image/*" id="imgMessage" onChange={(e) => {
-                      if (e.target.files.length > 0) {
-                        setImages(e.target.files[0]);
-                      }
-                    }} className="hidden" />
+              <form className="flex h-full items-center gap-3 relative" onSubmit={handleSendMessage}>
+                {images && (
+                  <div className="relative  p-2 rounded shadow-md flex items-center w-[90%]">
+                    <img
+                      src={URL.createObjectURL(images)}
+                      alt="preview"
+                      className="max-h-[60px] max-w-[100%] object-contain rounded"
+                    />
 
                     <button
-                      type="submit"
-
-                      aria-label="Send message"
-                      className="bg-gray-700 rounded-full p-2 hover:bg-gray-600 transition"
-
+                      type="button"
+                      onClick={() => setImages(null)}
+                      className="absolute top-0 right-0 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                      aria-label="Remove image"
                     >
-                      <SendHorizonal className="w-4 h-4 text-white" />
+                      ✕
                     </button>
                   </div>
-                </form>
-              </div>
+                )}
+
+                <input
+                  type="text"
+                  placeholder="Type Message"
+                  value={textMessage}
+                  onChange={(e) => setTextMessage(e.target.value)}
+                  className={`bg-black text-white w-[100%] h-[100%] px-4 text-lg outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 pr-24 ${images ? "opacity-50 cursor-not-allowed" : ""}`}
+                  disabled={!!images}
+                />
 
 
-            </div>}
+
+                <div className="absolute right-1 flex items-center gap-2">
+                  <label htmlFor="imgMessage" className="bg-gray-700 rounded-full p-2 cursor-pointer hover:bg-gray-600 transition">
+                    <Image className="w-4 h-4 text-white" />
+                  </label>
+                  <input type="file" accept="image/*" id="imgMessage" onChange={(e) => {
+                    if (e.target.files.length > 0) {
+                      setImages(e.target.files[0]);
+                    }
+                  }} className="hidden" />
+
+                  <button
+                    type="submit"
+
+                    aria-label="Send message"
+                    className="bg-gray-700 rounded-full p-2 hover:bg-gray-600 transition"
+
+                  >
+                    <SendHorizonal className="w-4 h-4 text-white" />
+                  </button>
+                </div>
+              </form>
+            </div>
+
+
+            }
           </div>
         )}
       </div>
