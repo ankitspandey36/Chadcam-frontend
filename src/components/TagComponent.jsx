@@ -8,6 +8,7 @@ function TagComponent() {
   const [suggestions, setSuggestions] = useState([]);
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
+
   const tagContainerRef = useRef(null);
 
   useEffect(() => {
@@ -16,7 +17,7 @@ function TagComponent() {
         const res = await axiosInstance.get("/user/trendingtopics");
         setSuggestions(res.data.topics || []);
       } catch (err) {
-        console.error("Error fetching tags", err);
+        console.error("Error fetching tags:", err);
       }
     };
     fetchTrending();
@@ -55,26 +56,38 @@ function TagComponent() {
 
   return (
     <div className="h-full flex flex-col z-40">
-      <h1 className="text-white font-semibold text-lg p-2">Tags:</h1>
-      <div className="flex-1 overflow-y-auto scrollbar-hide w-full px-1" ref={tagContainerRef}>
+      <h1 className="text-white font-semibold text-lg px-2 pt-1">Tags:</h1>
+
+      <div
+        className="flex-1 overflow-y-auto scrollbar-hide w-full px-2"
+        ref={tagContainerRef}
+      >
         {tags.map((tag, i) => (
           <div
             key={i}
-            className="break-words bg-[#1E1E2F] text-[#7DD3FC] px-3 py-1 rounded-xl text-sm font-medium flex justify-between items-center border border-[#38BDF8] shadow-sm w-fit max-w-full mb-1"
+            className="break-words bg-[#1E1E2F] text-[#7DD3FC] px-3 py-1 mb-1 rounded-xl text-sm font-medium flex justify-between items-center border border-[#38BDF8] shadow-sm w-fit max-w-full"
           >
             <span className="break-all whitespace-pre-wrap max-w-[90%]">{tag}</span>
-            <button onClick={() => removeIndex(i)} className="text-white font-bold ml-2">&times;</button>
+            <button
+              onClick={() => removeIndex(i)}
+              className="text-white font-bold ml-2"
+            >
+              &times;
+            </button>
           </div>
         ))}
       </div>
-      <div className="relative w-full px-2 pb-2 bg-[#121212]">
+
+      {/* Tag and suggestions */}
+      <div className="relative w-full px-2 pb-2">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full px-3 py-2 text-white text-base rounded-lg outline-none"
-          placeholder="Enter"
+          className="w-full px-3 py-2 text-white text-base rounded-lg bg-[#1e1e1e] border border-gray-600 outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter tag"
         />
+
         {input && (
           <div className="absolute top-full left-0 w-full mt-1 bg-white text-black rounded shadow max-h-40 overflow-y-auto z-50">
             {suggestions

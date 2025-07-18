@@ -12,16 +12,15 @@ function MessageComponent() {
         const res = await axiosInstance.get("/user/me");
         setUser(res.data.data);
       } catch (err) {
-        console.error("Failed to fetch user:", err);
+        console.error("Failed to fetch user info", err);
       }
     })();
 
     const handleMessage = (msgObj) => {
-      setMessages((prev) => [...prev, msgObj]);
+      setMessages(prev => [...prev, msgObj]);
     };
 
     socket.on("receive", handleMessage);
-
     return () => {
       socket.off("receive", handleMessage);
     };
@@ -30,16 +29,15 @@ function MessageComponent() {
   return (
     <div className="h-full flex flex-col">
       <h1 className="text-white font-semibold text-lg p-2">Chat:</h1>
-      <div className="flex-1 overflow-y-auto scrollbar-hide px-2">
+      <div className="flex-1 overflow-y-auto scrollbar-hide px-2 pb-2">
         {messages.map((message) => {
           const isMine = user && message.senderId._id === user._id;
-
           return (
             <div
               key={message._id}
-              className={`flex flex-col ${isMine ? "items-end" : "items-start"} my-1`}
+              className={`flex flex-col ${isMine ? 'items-end' : 'items-start'} my-1`}
             >
-              {message.msgType === "image" ? (
+              {message.msgType === 'image' ? (
                 <img
                   src={message.image}
                   alt="sent-img"
@@ -52,13 +50,13 @@ function MessageComponent() {
                 />
               ) : (
                 <div
-                  className={`text-black rounded-xl px-3 py-1 max-w-[70%] break-words ${isMine ? "bg-yellow-200" : "bg-orange-300"}`}
+                  className={`text-black rounded-xl px-3 py-1 max-w-[70%] break-words ${isMine ? 'bg-yellow-200' : 'bg-orange-300'}`}
                 >
                   {message.message}
                 </div>
               )}
               <div className="text-xs text-gray-400">
-                {isMine ? "Me" : message.senderId.email.split("@")[0]}
+                {isMine ? 'Me' : message.senderId.email.split('@')[0]}
               </div>
             </div>
           );
