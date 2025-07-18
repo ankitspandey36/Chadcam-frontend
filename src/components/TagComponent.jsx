@@ -4,109 +4,103 @@ import { setTags as globalTags, removeTags } from '../features/tagSlice.js';
 import { useDispatch } from 'react-redux';
 
 function TagComponent() {
-  const [tags, setTags] = useState([]);
-  const [suggestions, setSuggestions] = useState([]);
-  const [input, setInput] = useState("");
-  const dispatch = useDispatch();
+    const [tags, setTags] = useState([]);
+    const [suggestions, setSuggestions] = useState([]);
+    const [input, setInput] = useState("");
+    const dispatch = useDispatch();
 
-  const tagContainerRef = useRef(null);
+    const tagContainerRef = useRef(null);
 
-  useEffect(() => {
-    const fetchTrending = async () => {
-      try {
-        const res = await axiosInstance.get("/user/trendingtopics");
-        setSuggestions(res.data.topics || []);
-      } catch (err) {
-        console.error("Error fetching tags", err);
-      }
+    useEffect(() => {
+        const fetchTrending = async () => {
+            try {
+                const res = await axiosInstance.get("/user/trendingtopics");
+                setSuggestions(res.data.topics || []);
+            } catch (err) {
+                console.error("Error fetching tags", err);
+            }
+        };
+        fetchTrending();
+    }, []);
+
+    useEffect(() => {
+        if (tagContainerRef.current) {
+            tagContainerRef.current.scrollTop = tagContainerRef.current.scrollHeight;
+        }
+    }, [tags]);
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && input.trim()) {
+            e.preventDefault();
+            if (!tags.includes(input.trim())) {
+                const newTag = input.trim();
+                setTags([...tags, newTag]);
+                dispatch(globalTags([newTag]));
+            }
+            setInput('');
+        }
     };
-    fetchTrending();
-  }, []);
 
-  useEffect(() => {
-    if (tagContainerRef.current) {
-      tagContainerRef.current.scrollTop = tagContainerRef.current.scrollHeight;
-    }
-  }, [tags]);
+    const handleSuggestionClick = (tag) => {
+        if (!tags.includes(tag)) {
+            setTags([...tags, tag]);
+            dispatch(globalTags([tag]));
+        }
+        setInput('');
+    };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && input.trim()) {
-      e.preventDefault();
-      if (!tags.includes(input.trim())) {
-        const newTag = input.trim();
-        setTags([...tags, newTag]);
-        dispatch(globalTags([newTag]));
-      }
-      setInput('');
-    }
-  };
+    const removeIndex = (index) => {
+        setTags(tags.filter((_, i) => i !== index));
+        dispatch(removeTags(index));
+    };
 
-  const handleSuggestionClick = (tag) => {
-    if (!tags.includes(tag)) {
-      setTags([...tags, tag]);
-      dispatch(globalTags([tag]));
-    }
-    setInput('');
-  };
+    return (
+        <div className="h-full flex flex-col relative z-40">
+            <h1 className="text-white font-semibold text-lg p-2">Tags:</h1>
 
-  const removeIndex = (index) => {
-    setTags(tags.filter((_, i) => i !== index));
-    dispatch(removeTags(index));
-  };
+            {/* Scrollable Tag List */}
+            <div
+                className="flex-1 overflow-y-auto scrollbar-hide w-full px-1"
+                ref={tagContainerRef}
+            >
+                {tags.map((tag, i) => (
+                    <div
+                        key={i}
+                        className="break-words bg-[#1E1E2F] text-[#7DD3FC] px-3 py-1 rounded-xl text-sm font-medium flex justify-between items-center border border-[#38BDF8] shadow-sm w-fit max-w-full mb-1"
+                    >
+                        <span className="break-all whitespace-pre-wrap max-w-[90%]">{tag}</span>
+                        <button onClick={() => removeIndex(i)} className="text-white font-bold ml-2">&times;</button>
+                    </div>
+                ))}
+            </div>
 
-  return (
-    <div className="h-full flex flex-col space-y-2 relative z-40">
-
-      {/* Heading */}
-      <h1 className="text-white font-semibold text-lg p-2">Tags:</h1>
-
-      <div
-        className="flex-1 overflow-y-auto scrollbar-hide w-full px-1"
-        ref={tagContainerRef}
-      >
-        {tags.map((tag, i) => (
-          <div
-            key={i}
-            className="break-words bg-[#1E1E2F] text-[#7DD3FC] px-3 py-1 rounded-xl text-sm font-medium flex justify-between items-center border border-[#38BDF8] shadow-sm w-fit max-w-full mb-1"
-          >
-            <span className="break-all whitespace-pre-wrap max-w-[90%]">{tag}</span>
-            <button onClick={() => removeIndex(i)} className="text-white font-bold ml-2">&times;</button>
-          </div>
-        ))}
-      </div>
-
-      {/* Input field */}
-      <div className="relative w-full px-2 pb-2">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="w-full px-3 py-2 text-white text-base rounded-lg outline-none"
-          placeholder="Enter"
-        />
-
-        {/* Suggestions */}
-        {input && (
-          <div className="absolute top-full left-0 w-full mt-1 bg-white text-black rounded shadow max-h-40 overflow-y-auto z-50">
-            {suggestions
-              .filter(tag =>
-                tag.toLowerCase().includes(input.toLowerCase()) &&
-                !tags.includes(tag)
-              )
-              .map((tag, i) => (
-                <div
-                  key={i}
-                  onClick={() => handleSuggestionClick(tag)}
-                  className="p-2 cursor-pointer hover:bg-gray-200 flex items-center gap-2"
-                >
-                  🔥 {tag}
-                </div>
-              ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+            {/* Always-visible input */}
+            <div className="relative w-full px-2 pb-2 pt-1 bg-[#121212]">
+                <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="w-full px-3 py-2 text-white text-base rounded-lg outline-none"
+                    placeholder="Enter"
+                />
+                {input && (
+                    <div className="absolute top-full left-0 w-full mt-1 bg-white text-black rounded shadow max-h-40 overflow-y-auto z-50">
+                        {suggestions
+                            .filter(tag => tag.toLowerCase().includes(input.toLowerCase()) && !tags.includes(tag))
+                            .map((tag, i) => (
+                                <div
+                                    key={i}
+                                    onClick={() => handleSuggestionClick(tag)}
+                                    className="p-2 cursor-pointer hover:bg-gray-200 flex items-center gap-2"
+                                >
+                                    🔥 {tag}
+                                </div>
+                            ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 }
 
 export default TagComponent;
