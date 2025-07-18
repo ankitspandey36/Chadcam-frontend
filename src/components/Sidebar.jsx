@@ -76,7 +76,7 @@ function Sidebar() {
 
   return (
     <div className="h-screen w-[25%] bg-[#121212] text-white flex flex-col border-r border-[#7DD3FC] relative">
-      
+
       {/* Header */}
       <div className="flex items-center justify-center gap-3 pt-3 pb-2">
         <img src={logo} alt="Chadcam*" className="h-[2.5em] w-[2.5em] rounded-2xl" />
@@ -96,36 +96,17 @@ function Sidebar() {
       {/* Chat input */}
       {roomId && (
         <div className="absolute bottom-0 left-0 w-full px-2 py-2 bg-[#303030] shadow-inner rounded-t-3xl">
-          <form className="flex items-center gap-3" onSubmit={handleSendMessage}>
-            {images && (
-              <div className="relative p-2 rounded shadow-md flex items-center w-[90%]">
-                <img
-                  src={URL.createObjectURL(images)}
-                  alt="preview"
-                  className="max-h-[60px] max-w-[100%] object-contain rounded"
-                />
-                <button
-                  type="button"
-                  onClick={() => setImages(null)}
-                  className="absolute top-0 right-0 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
-                  aria-label="Remove image"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
+          <form className="w-full flex flex-col gap-2" onSubmit={handleSendMessage}>
+            <div className="flex items-center bg-black rounded-md px-2 py-2 w-full">
+              <input
+                type="text"
+                placeholder="Type Message"
+                value={textMessage}
+                onChange={(e) => setTextMessage(e.target.value)}
+                className="flex-1 bg-transparent text-white text-sm outline-none px-2"
+              />
 
-            <input
-              type="text"
-              placeholder="Type Message"
-              value={textMessage}
-              onChange={(e) => setTextMessage(e.target.value)}
-              className={`bg-black text-white w-full h-full px-4 py-2 text-sm outline-none rounded-md focus:ring-2 focus:ring-blue-500 pr-24 ${images ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled={!!images}
-            />
-
-            <div className="absolute right-3 bottom-4 flex items-center gap-2">
-              <label htmlFor="imgMessage" className="bg-gray-700 rounded-full p-2 cursor-pointer hover:bg-gray-600 transition">
+              <label htmlFor="imgMessage" className="p-2 rounded-full cursor-pointer hover:bg-gray-700">
                 <Image className="w-4 h-4 text-white" />
               </label>
               <input
@@ -140,15 +121,17 @@ function Sidebar() {
                 className="hidden"
               />
 
+              {/* Send Button */}
               <button
                 type="submit"
                 aria-label="Send message"
-                className="bg-gray-700 rounded-full p-2 hover:bg-gray-600 transition"
+                className="p-2 rounded-full hover:bg-gray-700"
               >
                 <SendHorizonal className="w-4 h-4 text-white" />
               </button>
             </div>
           </form>
+
         </div>
       )}
     </div>
