@@ -1,7 +1,7 @@
  ChadCam Frontend - Real-time Topic-Based Video & Chat Platform
 ========================================================
 
-![GitHub Repository](https://github.com/ankitspandey36/Chadcam-frontend)
+[Github Repository](https://github.com/ankitspandey36/Chadcam-frontend)
 
 Welcome to ChadCam, a cutting-edge and engaging group video and chat platform for users worldwide! ChadCam leverages advanced technologies like 100ms for real-time video streaming, Socket.IO for messaging, and Redux for seamless state management to bring you the ultimate experience in connecting and interacting with others.
 
@@ -17,6 +17,7 @@ Key Features ✨
 ⚛️  Redux for global state management
 🎨  Tailwind CSS + Lucide React icons
 🔗  Axios for API requests
+🟢  If you are single green dot will be displayed on your video.
 
 Getting Started iocon command
 ----------------------------
