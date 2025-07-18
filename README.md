@@ -1,12 +1,58 @@
-# React + Vite
+ ChadCam Frontend - Real-time Topic-Based Video & Chat Platform
+========================================================
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![GitHub Repository](https://github.com/ankitspandey36/Chadcam-frontend)
 
-Currently, two official plugins are available:
+Welcome to ChadCam, a cutting-edge and engaging group video and chat platform for users worldwide! ChadCam leverages advanced technologies like 100ms for real-time video streaming, Socket.IO for messaging, and Redux for seamless state management to bring you the ultimate experience in connecting and interacting with others.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Key Features ✨
+--------------
 
-## Expanding the ESLint configuration
+🔐  Authentication (Sign Up, Login, Logout, Forgot/Reset Password)
+🏷️  Tag-based room suggestions (via latest tag fetch)
+📹  Real-time group video chat with 100ms latency
+💬  Real-time messaging with Socket.IO (supports images too)
+🧠  Feedback and reporting system
+🪄  Custom scrollbar for clean UI
+⚛️  Redux for global state management
+🎨  Tailwind CSS + Lucide React icons
+🔗  Axios for API requests
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Getting Started iocon command
+----------------------------
+
+1. Clone the repository:
+```
+git clone https://github.com/ankitspandey36/Chadcam-frontend.git
+cd Chadcam-frontend
+```
+
+2. Install the dependencies:
+```
+npm install
+```
+
+3. Start the development server:
+```
+npm run dev
+```
+
+Usage 🚀
+--------
+
+After running "npm run dev," the application will be accessible at [http://localhost:3000]
+
+Contributing 🤝
+--------------
+
+If you're interested in contributing to ChadCam, we welcome your pull requests and issue reports.
+
+Save the Date 🗓️
+-----------------
+
+We are always looking for new maintainers, developers, and contributors to join our project. If you're passionate about building creative applications, we'd love to have you on board!
+
+License 📄
+---------
+
+This project is licensed under the [MIT license].
