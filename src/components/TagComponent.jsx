@@ -59,11 +59,11 @@ function TagComponent() {
         <div className=" space-y-2 relative z-40">
             <h1 className="text-white font-semibold text-lg  p-2 ">Tags:</h1>
 
-
             <div
-                className="flex flex-col gap-2 max-h-30 overflow-y-auto scrollbar-hide w-full px-1"
+                className="flex-1 flex flex-col gap-2 overflow-y-auto scrollbar-hide w-full px-1"
                 ref={tagContainerRef}
             >
+
                 {tags.map((tag, i) => (
                     <div
                         key={i}
